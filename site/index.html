@@ -31,34 +31,101 @@
       <span class="tagline">cron, in plain English</span>
     </header>
 
-    <main class="stage">
-      <section class="translator" aria-labelledby="input-label">
-        <label id="input-label" class="field-label" for="cron-input">
-          cron expression
-        </label>
-        <input
-          id="cron-input"
-          class="cron-input"
-          type="text"
-          spellcheck="false"
-          autocapitalize="off"
-          autocomplete="off"
-          value="*/15 9-17 * * 1-5"
-          aria-describedby="cron-error"
-        />
-        <p id="cron-error" class="cron-error" role="alert" hidden></p>
+    <main>
+      <div class="stage">
+        <section class="translator" aria-labelledby="input-label">
+          <label id="input-label" class="field-label" for="cron-input">
+            cron expression
+          </label>
+          <div class="input-row">
+            <input
+              id="cron-input"
+              class="cron-input"
+              type="text"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              value="*/15 9-17 * * 1-5"
+              aria-describedby="cron-error"
+            />
+            <button id="copy-btn" class="copy-btn" type="button" aria-label="Copy expression">
+              <span class="copy-label">copy</span>
+            </button>
+          </div>
+          <p id="cron-error" class="cron-error" role="alert" hidden></p>
 
-        <div class="schematic" id="schematic" aria-hidden="true">
-          <!-- field columns injected by app.js -->
+          <div class="schematic" id="schematic">
+            <!-- field columns injected by app.js -->
+          </div>
+
+          <p class="sentence" id="sentence" aria-live="polite">…</p>
+        </section>
+
+        <aside class="runlog" aria-labelledby="runlog-label">
+          <h2 id="runlog-label" class="field-label">next runs</h2>
+          <ol class="runlog-list" id="runlog"></ol>
+        </aside>
+      </div>
+
+      <section class="builder" aria-labelledby="builder-label">
+        <h2 id="builder-label" class="field-label">build a schedule</h2>
+        <div class="builder-grid" id="builder">
+          <label class="ctl">
+            <span class="ctl-name">frequency</span>
+            <select id="b-freq" class="select">
+              <option value="everyMinute">Every minute</option>
+              <option value="everyNMin">Every N minutes</option>
+              <option value="hourly">Hourly</option>
+              <option value="daily" selected>Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </label>
+
+          <label class="ctl" id="ctl-step" hidden>
+            <span class="ctl-name">interval</span>
+            <select id="b-step" class="select">
+              <option value="2">every 2 min</option>
+              <option value="5">every 5 min</option>
+              <option value="10">every 10 min</option>
+              <option value="15" selected>every 15 min</option>
+              <option value="20">every 20 min</option>
+              <option value="30">every 30 min</option>
+            </select>
+          </label>
+
+          <label class="ctl" id="ctl-dow" hidden>
+            <span class="ctl-name">weekday</span>
+            <select id="b-dow" class="select">
+              <option value="1" selected>Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+              <option value="0">Sunday</option>
+            </select>
+          </label>
+
+          <label class="ctl" id="ctl-dom" hidden>
+            <span class="ctl-name">day of month</span>
+            <select id="b-dom" class="select"><!-- 1..31 injected --></select>
+          </label>
+
+          <label class="ctl" id="ctl-hour" hidden>
+            <span class="ctl-name">hour</span>
+            <select id="b-hour" class="select"><!-- 0..23 injected --></select>
+          </label>
+
+          <label class="ctl" id="ctl-min">
+            <span class="ctl-name" id="min-name">minute</span>
+            <select id="b-min" class="select"><!-- 0..59 injected --></select>
+          </label>
         </div>
-
-        <p class="sentence" id="sentence" aria-live="polite">…</p>
+        <p class="builder-out">
+          builds <code id="builder-preview" class="mono-inline">30 9 * * *</code>
+        </p>
       </section>
-
-      <aside class="runlog" aria-labelledby="runlog-label">
-        <h2 id="runlog-label" class="field-label">next runs</h2>
-        <ol class="runlog-list" id="runlog"></ol>
-      </aside>
     </main>
 
     <footer class="footer">

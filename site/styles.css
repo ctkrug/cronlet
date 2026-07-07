@@ -96,9 +96,16 @@ body {
   color: var(--muted);
 }
 
+/* Main: hero stage, then the reverse builder below it */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 /* Stage: two columns on desktop, stacked on phone */
 .stage {
-  flex: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
   gap: 24px;
@@ -124,6 +131,59 @@ body {
 }
 
 /* Cron input */
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.input-row .cron-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.copy-btn {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--surface-2);
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-chip);
+  padding: 0 16px;
+  min-height: 44px;
+  cursor: pointer;
+  transition: box-shadow 160ms ease-out, border-color 160ms ease-out,
+    transform 90ms ease-out, background 160ms ease-out;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent);
+  background: var(--surface-1);
+}
+
+.copy-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--glow);
+  border-color: var(--accent);
+}
+
+.copy-btn:active {
+  transform: translateY(1px);
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 1px var(--accent), 0 0 0 rgba(78, 201, 224, 0); }
+  40% { box-shadow: 0 0 0 1px var(--accent), 0 0 22px rgba(78, 201, 224, 0.5); }
+  100% { box-shadow: 0 0 0 1px transparent, 0 0 0 rgba(78, 201, 224, 0); }
+}
+
+.cron-input.pulse {
+  animation: pulse-border 600ms ease-out;
+}
+
 .cron-input {
   width: 100%;
   font-family: var(--mono);
@@ -234,6 +294,15 @@ body {
 }
 
 /* Run log */
+@keyframes roll-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.runlog-list li.roll {
+  animation: roll-in 140ms ease-out;
+}
+
 .runlog-list {
   list-style: none;
   margin: 0;
@@ -256,6 +325,94 @@ body {
 
 .runlog-list li .rel {
   color: var(--amber);
+}
+
+/* Reverse builder */
+.builder {
+  background: linear-gradient(180deg, var(--surface-1), var(--surface-2));
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow), var(--hairline);
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.builder-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: end;
+}
+
+.ctl {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 150px;
+  flex: 1 1 160px;
+}
+
+.ctl[hidden] {
+  display: none;
+}
+
+.ctl-name {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+/* Themed native select — no naked widgets. */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--text);
+  background-color: var(--bg);
+  /* caret drawn as an inline SVG so it inherits the accent */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%234ec9e0' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-chip);
+  padding: 10px 36px 10px 14px;
+  cursor: pointer;
+  transition: box-shadow 160ms ease-out, border-color 160ms ease-out;
+}
+
+.select:hover {
+  border-color: var(--accent);
+}
+
+.select:focus-visible {
+  outline: none;
+  box-shadow: var(--glow);
+  border-color: var(--accent);
+}
+
+.select option {
+  color: var(--text);
+  background: var(--surface-1);
+}
+
+.builder-out {
+  margin: 20px 0 0;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.mono-inline {
+  font-family: var(--mono);
+  color: var(--accent);
+  background: var(--bg);
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-token);
+  padding: 2px 8px;
 }
 
 /* Footer */
