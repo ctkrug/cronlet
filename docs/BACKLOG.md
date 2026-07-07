@@ -10,7 +10,7 @@ verify true. The **first story of Epic 1 is the wow moment** — the demo lands 
 The static companion page in `site/`. Depends on the core primitives shipped at scope
 (`parse` / `next` / `describe`), so the demo is reachable immediately.
 
-- [ ] **1.1 — WOW: live cron → English + next-5 + field schematic**
+- [x] **1.1 — WOW: live cron → English + next-5 + field schematic**
   - Typing any valid expression updates, with no button press, (a) a plain-English sentence,
     (b) the next five run times, and (c) a five-column field schematic — all within one frame.
   - `*/15 9-17 * * 1-5` shows "Every 15 minutes…", five ascending future timestamps, and cyan
@@ -24,7 +24,7 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
   - Round-trip holds: builder-produced expression, when re-parsed, matches the builder's intent
     (e.g. "every day at 09:30" ⇒ `30 9 * * *`).
 
-- [ ] **1.3 — Invalid input shows an inline annotation, never a crash**
+- [x] **1.3 — Invalid input shows an inline annotation, never a crash**
   - Pasting `70 * * * *` or `* * * *` shows an inline amber error message and leaves the last
     valid output visible; no uncaught exception in the console.
   - Under `prefers-reduced-motion` the error shows without the shake animation.
@@ -42,17 +42,17 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
     equal `node-cron`'s for each, across DST boundaries.
   - The check runs in CI (dev dependency only; the shipped package stays zero-dep).
 
-- [ ] **2.2 — Full `describe()` coverage**
+- [x] **2.2 — Full `describe()` coverage**
   - Ranges, lists, steps, `a-b/n`, day/month name output, and combined day+month clauses each
     produce a correct, readable sentence with ≥1 asserted test apiece.
   - Every `@macro` describes correctly (e.g. `@weekly` → "At 00:00, on Sunday").
 
-- [ ] **2.3 — `prev()` previous-run computation**
+- [x] **2.3 — `prev()` previous-run computation**
   - `prev(expr, date)` returns the last matching instant strictly before `date`; `prev(n)`
     returns n descending matches.
   - `prev` then `next` round-trips to the same instant for a matching input.
 
-- [ ] **2.4 — Hardened validation & messages**
+- [x] **2.4 — Hardened validation & messages**
   - Wrong field count, out-of-range values, `*/0`, reversed ranges, and unknown names each
     throw `CronError` with a field-specific message; all covered by tests.
   - `describe()` and `next()` never throw on any successfully parsed expression.
