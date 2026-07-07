@@ -1,5 +1,8 @@
 # Cronlet
 
+[![CI](https://github.com/ctkrug/cronlet/actions/workflows/ci.yml/badge.svg)](https://github.com/ctkrug/cronlet/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 **A tiny, dependency-free cron-expression parser and scheduler for TypeScript — plus a
 web page that turns a cron string into plain English and back.**
 
