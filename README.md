@@ -60,7 +60,13 @@ size:
 `site/` is a static, self-contained page — the **wow moment**: paste any cron expression and
 watch it resolve, live, into (1) a plain-English sentence, (2) the next five run times, and
 (3) a highlighted schematic of the five fields. Type in plain English and it builds the cron
-back. No server, no build step to view — just open it.
+back. It's entirely client-side — no server.
+
+```sh
+npm run build:site   # compiles the library into site/lib/
+# then serve or open site/ — every asset path is relative, so it works
+# from a subpath (e.g. apps.charliekrug.com/cronlet/) or over file://
+```
 
 ## Cron syntax supported
 
