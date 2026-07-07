@@ -38,6 +38,12 @@ test("stepped range a-b/n honors both bound and step", () => {
   assert.deepEqual(parse("0-30/10 * * * *").minute, [0, 10, 20, 30]);
 });
 
+test("single-value step a/n runs from the value to the field max", () => {
+  // "5/15" means 5, then every 15th up to 59 — not just the value 5.
+  assert.deepEqual(parse("5/15 * * * *").minute, [5, 20, 35, 50]);
+  assert.deepEqual(parse("* 2/6 * * *").hour, [2, 8, 14, 20]);
+});
+
 test("rejects malformed expressions", () => {
   assert.throws(() => parse(""), CronError);
   assert.throws(() => parse("* * * *"), CronError);
