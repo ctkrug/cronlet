@@ -11,13 +11,13 @@
  */
 import type { ParsedCron } from "./types.js";
 import { parse } from "./parse.js";
-import { matches, next, nextN } from "./schedule.js";
+import { matches, next, nextN, prev, prevN } from "./schedule.js";
 import { describe } from "./describe.js";
 
 export { CronError } from "./types.js";
 export type { ParsedCron } from "./types.js";
 export { parse } from "./parse.js";
-export { matches, next, nextN } from "./schedule.js";
+export { matches, next, nextN, prev, prevN } from "./schedule.js";
 export { describe } from "./describe.js";
 
 /** An object wrapper around a parsed expression with convenience methods. */
@@ -46,6 +46,15 @@ export class Cron {
     return count === undefined
       ? next(this.parsed, after)
       : nextN(this.parsed, count, after);
+  }
+
+  /** The previous matching date, or the previous `count` dates if given. */
+  prev(count?: undefined, before?: Date): Date;
+  prev(count: number, before?: Date): Date[];
+  prev(count?: number, before: Date = new Date()): Date | Date[] {
+    return count === undefined
+      ? prev(this.parsed, before)
+      : prevN(this.parsed, count, before);
   }
 
   /** A plain-English description of this schedule. */
