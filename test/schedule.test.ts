@@ -1,6 +1,21 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { Cron } from "../src/index.js";
+import { Cron, CronError } from "../src/index.js";
+
+test("next()/prev() throw CronError on an impossible date", () => {
+  // February 30 never occurs; the field logic is valid but no instant matches.
+  const job = new Cron("0 0 30 2 *");
+  const from = new Date(2026, 0, 1, 0, 0, 0);
+  assert.throws(() => job.next(undefined, from), CronError);
+  assert.throws(() => job.prev(undefined, from), CronError);
+});
+
+test("nextN()/prevN() with count 0 return an empty list", () => {
+  const job = new Cron("* * * * *");
+  const from = new Date(2026, 0, 1, 0, 0, 0);
+  assert.deepEqual(job.next(0, from), []);
+  assert.deepEqual(job.prev(0, from), []);
+});
 
 test("next() finds the following matching minute", () => {
   const job = new Cron("*/15 * * * *");
