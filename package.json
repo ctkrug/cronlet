@@ -1,0 +1,51 @@
+{
+  "name": "cronlet",
+  "version": "0.1.0",
+  "description": "Tiny, dependency-free cron-expression parser, scheduler, and human-readable describer.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --import tsx --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "cron",
+    "crontab",
+    "scheduler",
+    "parser",
+    "cron-parser",
+    "zero-dependency",
+    "typescript"
+  ],
+  "author": "Charlie Krug",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctkrug/cronlet.git"
+  },
+  "homepage": "https://github.com/ctkrug/cronlet#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}
