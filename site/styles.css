@@ -1,0 +1,293 @@
+/* Cronlet — blueprint/technical direction (see docs/DESIGN.md). */
+:root {
+  --bg: #0c1a2b;
+  --surface-1: #11263c;
+  --surface-2: #17324f;
+  --grid-major: #1e3a5c;
+  --grid-minor: rgba(78, 201, 224, 0.06);
+  --text: #e7f0f6;
+  --muted: #8fa9bf;
+  --accent: #4ec9e0;
+  --amber: #f4b860;
+  --success: #5fd6a0;
+  --danger: #ff7a7a;
+
+  --r-panel: 10px;
+  --r-chip: 6px;
+  --r-token: 4px;
+
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --hairline: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --glow: 0 0 0 1px var(--accent), 0 0 18px rgba(78, 201, 224, 0.35);
+
+  --sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --display: "Space Grotesk", var(--sans);
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px clamp(16px, 4vw, 48px) 32px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Plotted grid background: major lines over a fine minor mesh + vignette. */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-minor) 1px, transparent 1px);
+  background-size:
+    96px 96px,
+    96px 96px,
+    24px 24px,
+    24px 24px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse 120% 90% at 50% 15%, #000 55%, transparent 100%);
+}
+
+/* Topbar / wordmark */
+.topbar {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wordmark {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.wordmark .tick {
+  color: var(--amber);
+  padding: 0 1px;
+}
+
+.tagline {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Stage: two columns on desktop, stacked on phone */
+.stage {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  gap: 24px;
+  align-items: start;
+}
+
+.translator,
+.runlog {
+  background: linear-gradient(180deg, var(--surface-1), var(--surface-2));
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-panel);
+  box-shadow: var(--shadow), var(--hairline);
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.field-label {
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+/* Cron input */
+.cron-input {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-chip);
+  padding: 14px 16px;
+  transition: box-shadow 180ms ease-out, border-color 180ms ease-out;
+}
+
+.cron-input:hover {
+  border-color: var(--accent);
+}
+
+.cron-input:focus-visible {
+  outline: none;
+  box-shadow: var(--glow);
+  border-color: var(--accent);
+}
+
+.cron-input.invalid {
+  border-color: var(--danger);
+}
+
+.cron-error {
+  margin: 10px 0 0;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--amber);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.cron-input.shake {
+  animation: shake 220ms ease-out;
+}
+
+/* Field schematic */
+.schematic {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.field-col {
+  border: 1px solid var(--grid-major);
+  border-radius: var(--r-chip);
+  padding: 10px 8px 8px;
+  background: rgba(12, 26, 43, 0.6);
+  min-height: 96px;
+  transition: box-shadow 160ms ease-out, border-color 160ms ease-out;
+}
+
+.field-col.active {
+  box-shadow: var(--glow);
+  border-color: var(--accent);
+}
+
+.field-col .col-name {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px dashed var(--grid-major);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: var(--r-token);
+  padding: 1px 6px;
+}
+
+.chip.all {
+  color: var(--muted);
+  background: transparent;
+  border: 1px dashed var(--grid-major);
+}
+
+/* Plain-English sentence */
+.sentence {
+  margin: 8px 0 0;
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 3.2vw, 2rem);
+  line-height: 1.25;
+  max-width: 40ch;
+  color: var(--text);
+}
+
+/* Run log */
+.runlog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.runlog-list li {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--grid-major);
+}
+
+.runlog-list li .rel {
+  color: var(--amber);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .stage {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
