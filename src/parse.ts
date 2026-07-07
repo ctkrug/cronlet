@@ -45,11 +45,14 @@ export function parseField(raw: string, def: FieldDef): number[] {
       hi = stepPart === undefined ? lo : def.max;
     }
 
-    if (lo < def.min || hi > def.max) {
-      throw new CronError(`${def.name} value out of range (${def.min}-${def.max})`);
+    if (lo < def.min || lo > def.max) {
+      throw new CronError(`${def.name} value ${lo} out of range (${def.min}-${def.max})`);
+    }
+    if (hi < def.min || hi > def.max) {
+      throw new CronError(`${def.name} value ${hi} out of range (${def.min}-${def.max})`);
     }
     if (lo > hi) {
-      throw new CronError(`${def.name} range start ${lo} is after end ${hi}`);
+      throw new CronError(`${def.name} range ${lo}-${hi} is reversed (start is after end)`);
     }
     for (let v = lo; v <= hi; v += step) set.add(v);
   }
