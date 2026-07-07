@@ -74,3 +74,53 @@ export function nextN(parsed: ParsedCron, count: number, after: Date = new Date(
   }
   return out;
 }
+
+/**
+ * The last matching instant strictly *before* `before`, the mirror of
+ * {@link next}: it steps whichever field is out of range backwards and maxes
+ * out the fields below it, in local time.
+ *
+ * @throws {CronError} if no match is found within the safety cap.
+ */
+export function prev(parsed: ParsedCron, before: Date = new Date()): Date {
+  const d = new Date(before.getTime());
+  d.setSeconds(0, 0);
+  d.setMinutes(d.getMinutes() - 1); // strictly before `before`
+
+  for (let i = 0; i < MAX_ITERATIONS; i++) {
+    if (!parsed.month.includes(d.getMonth() + 1)) {
+      // Retreat to the last instant of the previous month.
+      d.setDate(1);
+      d.setHours(23, 59, 0, 0);
+      d.setDate(0);
+      continue;
+    }
+    if (!dayMatches(parsed, d)) {
+      d.setDate(d.getDate() - 1);
+      d.setHours(23, 59, 0, 0);
+      continue;
+    }
+    if (!parsed.hour.includes(d.getHours())) {
+      d.setHours(d.getHours() - 1, 59, 0, 0);
+      continue;
+    }
+    if (!parsed.minute.includes(d.getMinutes())) {
+      d.setMinutes(d.getMinutes() - 1, 0, 0);
+      continue;
+    }
+    return d;
+  }
+
+  throw new CronError(`no matching time found for "${parsed.source}"`);
+}
+
+/** The previous `count` matching instants before `before`, in descending order. */
+export function prevN(parsed: ParsedCron, count: number, before: Date = new Date()): Date[] {
+  const out: Date[] = [];
+  let cursor = before;
+  for (let i = 0; i < count; i++) {
+    cursor = prev(parsed, cursor);
+    out.push(cursor);
+  }
+  return out;
+}
