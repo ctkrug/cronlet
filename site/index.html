@@ -134,6 +134,74 @@
       </section>
     </main>
 
+    <section class="learn" aria-labelledby="learn-title">
+      <h2 id="learn-title" class="learn-h">How to read a cron expression</h2>
+      <p>
+        A cron expression is five fields separated by spaces:
+        <code>minute hour day-of-month month day-of-week</code>. Each field says
+        which values match, and a job runs whenever the current time matches
+        every field at once.
+      </p>
+      <p>
+        The patterns are the same in every field. A star (<code>*</code>) matches
+        every value. A list like <code>1,15,30</code> matches those exact values.
+        A range like <code>9-17</code> matches everything from 9 to 17. A step
+        like <code>*/15</code> matches every 15th value from the field minimum, so
+        <code>*/15</code> in the minute field fires at :00, :15, :30, and :45. You
+        can combine them: <code>0-30/10</code> means 0, 10, 20, 30.
+      </p>
+      <p>
+        Two fields accept names. Months take <code>JAN</code> through
+        <code>DEC</code>, and weekdays take <code>SUN</code> through
+        <code>SAT</code>, so <code>0 9 * * MON-FRI</code> reads as 9am on
+        weekdays. Sunday is both 0 and 7. The shortcuts <code>@hourly</code>,
+        <code>@daily</code>, <code>@weekly</code>, <code>@monthly</code>, and
+        <code>@yearly</code> expand to the full five-field form.
+      </p>
+
+      <h2 class="learn-h">Common cron examples</h2>
+      <ul class="learn-list">
+        <li><code>*/15 9-17 * * 1-5</code> runs every 15 minutes from 9am to 5pm, Monday to Friday.</li>
+        <li><code>0 0 * * 0</code> runs at midnight every Sunday.</li>
+        <li><code>30 2 1 * *</code> runs at 2:30am on the first of every month.</li>
+        <li><code>0 */6 * * *</code> runs every six hours.</li>
+      </ul>
+      <p>Paste any of these into the box above to see the plain-English reading and the next five run times.</p>
+
+      <h2 class="learn-h">FAQ</h2>
+      <dl class="faq">
+        <dt>What does <code>*/15</code> mean in cron?</dt>
+        <dd>
+          It is a step: every 15th value starting from the field minimum. In the
+          minute field that is :00, :15, :30, and :45. In the hour field
+          <code>*/6</code> would mean 0, 6, 12, and 18.
+        </dd>
+        <dt>Does Cronlet use local time or UTC?</dt>
+        <dd>
+          The run times on this page use your browser's local time zone, the same
+          way a crontab uses the machine's local time. There is no server involved.
+        </dd>
+        <dt>Why do day-of-month and day-of-week act strangely together?</dt>
+        <dd>
+          In standard cron, when both day fields are restricted a day matches if
+          <em>either</em> one matches, not both. So <code>0 0 13 * 5</code> fires
+          on the 13th and on every Friday, not only Friday the 13th. Cronlet
+          follows this rule and writes "or" in the description to make it visible.
+        </dd>
+        <dt>Can I turn plain English back into a cron string?</dt>
+        <dd>
+          Yes. The builder under the translator lets you pick a frequency and time,
+          and it writes the matching expression into the box for you.
+        </dd>
+        <dt>Is Cronlet free to use?</dt>
+        <dd>
+          Yes. It is MIT licensed with no runtime dependencies. The same parser
+          that powers this page ships as a small TypeScript library you can install
+          from npm.
+        </dd>
+      </dl>
+    </section>
+
     <footer class="footer">
       <span>Zero dependencies.</span>
       <a href="https://github.com/ctkrug/cronlet">Source on GitHub →</a>
