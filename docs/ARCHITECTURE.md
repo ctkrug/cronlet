@@ -66,6 +66,9 @@ npm run build:site # compile src/ into site/lib/ for the page
 npm run bench      # parse + next-time throughput vs cron-parser
 ```
 
+Coverage: `node --import tsx --test --experimental-test-coverage test/*.test.ts`
+(currently ~99% line on `src/`; the build ships types but no source maps).
+
 `test/cross-check.test.ts` and `bench/bench.ts` import `cron-parser`, a **dev-only**
 correctness/perf reference. It is never imported by `src/`, so the published package
 (`files: [dist, README, LICENSE]`) stays zero-dependency.
