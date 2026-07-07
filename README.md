@@ -158,3 +158,7 @@ for the roadmap, and [`docs/DESIGN.md`](docs/DESIGN.md) for the companion page's
 ## License
 
 MIT © Charlie Krug
+
+---
+
+More of Charlie's projects → [apps.charliekrug.com](https://apps.charliekrug.com)
