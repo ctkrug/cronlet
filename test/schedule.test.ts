@@ -55,6 +55,27 @@ test("matches() reports minute-precision membership", () => {
   assert.equal(job.matches(new Date(2026, 5, 10, 14, 31, 0)), false);
 });
 
+test("matches() applies the day-of-month OR day-of-week rule", () => {
+  // "the 13th OR any Friday" — both day fields restricted, so either matches.
+  const job = new Cron("0 0 13 * 5");
+  assert.equal(job.matches(new Date(2026, 1, 13, 0, 0, 0)), true); // Feb 13 (a Friday, and the 13th)
+  assert.equal(job.matches(new Date(2026, 2, 13, 0, 0, 0)), true); // Mar 13 is the 13th (a Friday too)
+  assert.equal(job.matches(new Date(2026, 0, 2, 0, 0, 0)), true); // Jan 2 2026 is a Friday
+  assert.equal(job.matches(new Date(2026, 0, 13, 0, 0, 0)), true); // Jan 13 is the 13th (a Tuesday)
+  assert.equal(job.matches(new Date(2026, 0, 6, 0, 0, 0)), false); // Jan 6: neither the 13th nor a Friday
+});
+
+test("7 schedules on Sundays, same as 0", () => {
+  const sun = new Cron("0 0 * * 7");
+  // Jan 4 2026 is a Sunday; Jan 5 is a Monday.
+  assert.equal(sun.matches(new Date(2026, 0, 4, 0, 0, 0)), true);
+  assert.equal(sun.matches(new Date(2026, 0, 5, 0, 0, 0)), false);
+  assert.deepEqual(
+    sun.next(undefined, new Date(2026, 0, 1, 0, 0, 0)),
+    new Date(2026, 0, 4, 0, 0, 0),
+  );
+});
+
 test("prev() finds the last matching instant strictly before", () => {
   const job = new Cron("*/15 * * * *");
   const from = new Date(2026, 0, 1, 9, 7, 0); // 09:07
