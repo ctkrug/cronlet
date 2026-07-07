@@ -83,6 +83,57 @@ npm run build:site   # compiles the library into site/lib/
 `*` any · `a-b` range · `a,b,c` list · `*/n` step · `a-b/n` stepped range ·
 `JAN`–`DEC` / `SUN`–`SAT` names · `@hourly` `@daily` `@weekly` `@monthly` `@yearly` shortcuts.
 
+## API
+
+Everything is exported both as a class and as standalone functions — use whichever fits.
+
+### `class Cron`
+
+```ts
+const job = new Cron("30 9 * * 1-5");
+
+job.source;              // "30 9 * * 1-5" (normalized; @macros are expanded)
+job.parsed;             // the ParsedCron structure (inspectable field lists)
+job.describe();         // "At 09:30, on Monday through Friday"
+job.matches(date?);     // boolean — does `date` (default: now) match, to the minute?
+job.next();             // Date — next match after now
+job.next(5);            // Date[] — the next 5 matches
+job.next(1, from);      // Date[] — pass a starting Date as the 2nd argument
+job.prev();             // Date — previous match before now
+job.prev(3);            // Date[] — the previous 3 matches (descending)
+```
+
+`new Cron(expr)` throws `CronError` if `expr` is invalid.
+
+### Functions
+
+| Function | Returns | Notes |
+| --- | --- | --- |
+| `parse(expr)` | `ParsedCron` | Validate + expand into inspectable field lists. Throws `CronError`. |
+| `describe(parsed)` | `string` | Plain-English sentence. Never throws on a parsed input. |
+| `matches(parsed, date)` | `boolean` | Minute-precision membership test. |
+| `next(parsed, after?)` | `Date` | First match strictly after `after` (default: now). |
+| `nextN(parsed, n, after?)` | `Date[]` | The next `n` matches, ascending. |
+| `prev(parsed, before?)` | `Date` | Last match strictly before `before` (default: now). |
+| `prevN(parsed, n, before?)` | `Date[]` | The previous `n` matches, descending. |
+| `CronError` | `class` | Thrown on invalid input, with a field-specific message. |
+
+```ts
+import { parse, next, describe, CronError } from "cronlet";
+
+const parsed = parse("@weekly");
+describe(parsed);              // "At 00:00, on Sunday"
+next(parsed, new Date());      // → next Sunday 00:00
+
+try {
+  parse("70 * * * *");
+} catch (err) {
+  if (err instanceof CronError) console.error(err.message); // "minute value 70 out of range (0-59)"
+}
+```
+
+All scheduling is in **local time**, so `next()`/`prev()` follow the host's DST rules.
+
 ## Install
 
 ```sh
