@@ -45,3 +45,14 @@ test("rejects malformed expressions", () => {
   assert.throws(() => parse("*/0 * * * *"), CronError);
   assert.throws(() => parse("5-2 * * * *"), CronError);
 });
+
+test("errors carry a field-specific, actionable message", () => {
+  assert.throws(() => parse("* * * *"), /expected 5 fields, got 4/);
+  assert.throws(() => parse("60 * * * *"), /minute value 60 out of range \(0-59\)/);
+  assert.throws(() => parse("0 24 * * *"), /hour value 24 out of range \(0-23\)/);
+  assert.throws(() => parse("0 0 * * 8"), /day-of-week value 8 out of range \(0-7\)/);
+  assert.throws(() => parse("*/0 * * * *"), /invalid minute step "0"/);
+  assert.throws(() => parse("5-2 * * * *"), /minute range 5-2 is reversed/);
+  assert.throws(() => parse("0 0 * BAD *"), /invalid month value "BAD"/);
+  assert.throws(() => parse("0 0 32 * *"), /day-of-month value 32 out of range \(1-31\)/);
+});
