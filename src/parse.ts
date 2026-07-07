@@ -21,7 +21,11 @@ export function parseField(raw: string, def: FieldDef): number[] {
   for (const part of raw.split(",")) {
     if (part === "") throw new CronError(`empty ${def.name} value`);
 
-    const [rangePart, stepPart] = part.split("/", 2);
+    const slashSplit = part.split("/");
+    if (slashSplit.length > 2) {
+      throw new CronError(`invalid ${def.name} value "${part}" (multiple "/")`);
+    }
+    const [rangePart, stepPart] = slashSplit;
     let step = 1;
     if (stepPart !== undefined) {
       if (!/^\d+$/.test(stepPart) || Number(stepPart) === 0) {
@@ -36,7 +40,11 @@ export function parseField(raw: string, def: FieldDef): number[] {
       lo = def.min;
       hi = def.max;
     } else if (rangePart.includes("-")) {
-      const [a, b] = rangePart.split("-", 2);
+      const dashSplit = rangePart.split("-");
+      if (dashSplit.length > 2) {
+        throw new CronError(`invalid ${def.name} range "${rangePart}" (multiple "-")`);
+      }
+      const [a, b] = dashSplit;
       lo = toNumber(a, def);
       hi = toNumber(b, def);
     } else {
