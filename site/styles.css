@@ -442,6 +442,27 @@ main {
   }
 }
 
+/* Phone: keep the five-field schematic legible and the columns from crowding. */
+@media (max-width: 480px) {
+  .schematic {
+    gap: 4px;
+    margin: 16px 0;
+  }
+  .field-col {
+    padding: 8px 5px 6px;
+    min-height: 84px;
+  }
+  .field-col .col-name {
+    font-size: 0.55rem;
+    letter-spacing: 0.04em;
+  }
+  .chip,
+  .chip.all {
+    font-size: 0.66rem;
+    padding: 1px 4px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
