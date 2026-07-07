@@ -64,6 +64,15 @@ test("describes a month range with 'through'", () => {
   );
 });
 
+test("joins a two-value minute list with 'and', not a step", () => {
+  // [1, 45] is not an evenly-spaced run to the top, so it stays a list.
+  assert.equal(new Cron("1,45 * * * *").describe(), "At minute 1 and 45");
+});
+
+test("describes a single month", () => {
+  assert.equal(new Cron("0 0 1 12 *").describe(), "At 00:00, on day-of-month 1, in December");
+});
+
 test("joins both day fields with 'or' (the Vixie OR rule)", () => {
   assert.equal(
     new Cron("0 0 1 * 1").describe(),
