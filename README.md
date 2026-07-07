@@ -17,9 +17,10 @@ import { Cron } from "cronlet";
 
 const job = new Cron("*/15 9-17 * * 1-5");   // every 15 min, 9am–5pm, Mon–Fri
 
-job.describe();          // "Every 15 minutes, between 09:00 and 17:00, Monday through Friday"
+job.describe();          // "At every 15th minute past hour 9 through 17, on Monday through Friday"
 job.next();              // → next matching Date after now
 job.next(5);             // → the next 5 matching Dates
+job.prev();              // → the previous matching Date before now
 job.matches(new Date()); // → boolean
 ```
 
