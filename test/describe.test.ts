@@ -13,7 +13,7 @@ test("describes a fixed clock time", () => {
 test("describes a weekday range", () => {
   assert.equal(
     new Cron("0 0 * * 1-5").describe(),
-    "At 00:00, on Monday, Tuesday, Wednesday, Thursday, and Friday",
+    "At 00:00, on Monday through Friday",
   );
 });
 
