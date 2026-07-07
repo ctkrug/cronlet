@@ -4,7 +4,9 @@ All notable changes to Cronlet are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-07-07
+
+First stable release.
 
 ### Added
 
@@ -21,6 +23,8 @@ All notable changes to Cronlet are documented here. The format follows
 - Correctness cross-check against `cron-parser` and a `parse`/`next` throughput
   benchmark (`npm run bench`), both dev-only.
 - CI on Node 18/20/22 and a full test suite.
+- Companion page: OpenGraph tags and an in-page cron primer + FAQ for readers
+  arriving from search.
 
 ### Fixed
 
