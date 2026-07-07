@@ -29,7 +29,7 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
     valid output visible; no uncaught exception in the console.
   - Under `prefers-reduced-motion` the error shows without the shake animation.
 
-- [ ] **1.4 — Design polish: blueprint direction, responsive, brand assets**
+- [x] **1.4 — Design polish: blueprint direction, responsive, brand assets**
   - Page matches `docs/DESIGN.md` tokens/fonts; composes with no horizontal scroll or dead
     margins at 390 / 768 / 1440px.
   - Custom SVG favicon (not the default globe) and designed wordmark are present; every control
@@ -82,4 +82,4 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
 
 ---
 
-**Total stories:** 12
+**Total stories:** 12 — **all 12 complete.** ✅
