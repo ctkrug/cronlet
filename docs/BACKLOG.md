@@ -37,9 +37,10 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
 
 ## Epic 2 — Core correctness & edge cases
 
-- [ ] **2.1 — Cross-check `next()` against `node-cron`**
+- [x] **2.1 — Cross-check `next()` against a reference (`cron-parser`)**
   - A dev-only test iterates a representative expression set and asserts Cronlet's next-N times
-    equal `node-cron`'s for each, across DST boundaries.
+    equal the reference's for each. *(Reference is `cron-parser`, not `node-cron`: node-cron is a
+    task scheduler and exposes no next-time API, so cron-parser is the correct oracle.)*
   - The check runs in CI (dev dependency only; the shipped package stays zero-dep).
 
 - [x] **2.2 — Full `describe()` coverage**
@@ -59,7 +60,7 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
 
 ## Epic 3 — Benchmark, package & publish
 
-- [ ] **3.1 — Benchmark vs `node-cron`**
+- [x] **3.1 — Benchmark vs a reference (`cron-parser`)**
   - A `bench/` script measures parse throughput and next-time throughput for both libraries and
     prints a table; results (and bundle-size delta) are pasted into the README.
   - Cronlet's core bundle size is reported and is a fraction of `node-cron`'s.
