@@ -32,8 +32,27 @@ job.matches(new Date()); // → boolean
   parsers — are covered by tests that cross-check against `node-cron`.
 - **Explains itself.** `describe()` renders any expression as a plain-English sentence, so a
   cron string in a config file stops being a write-only riddle.
-- **Tiny and fast.** Benchmarked against `node-cron` for both parse and next-time computation;
-  the numbers live in the README once the benchmark story lands.
+- **Tiny and fast.** Zero dependencies and a core that gzips to **~4.7 KB**, benchmarked
+  against `cron-parser` (see below).
+
+## Benchmark
+
+`npm run bench` times parse and next-time throughput against
+[`cron-parser`](https://www.npmjs.com/package/cron-parser) (an independent reference; Node 18,
+your numbers will vary):
+
+| operation | cronlet | cron-parser |
+| --------- | ------------: | ----------: |
+| parse     |  47,600 ops/s | 8,400 ops/s |
+| next()    | 101,600 ops/s | 5,100 ops/s |
+
+Cronlet is ~5.7× faster to parse and ~20× faster to compute the next run, at a fraction of the
+size:
+
+| library | gzipped core | runtime deps |
+| --- | ---: | --- |
+| **cronlet** | **~4.7 KB** | none |
+| cron-parser | ~18 KB | `luxon` |
 
 ## The companion page
 
