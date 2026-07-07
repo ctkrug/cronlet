@@ -70,3 +70,13 @@ test("joins both day fields with 'or' (the Vixie OR rule)", () => {
     "At 00:00, on day-of-month 1 or Monday",
   );
 });
+
+test("every @macro describes correctly", () => {
+  assert.equal(new Cron("@yearly").describe(), "At 00:00, on day-of-month 1, in January");
+  assert.equal(new Cron("@annually").describe(), "At 00:00, on day-of-month 1, in January");
+  assert.equal(new Cron("@monthly").describe(), "At 00:00, on day-of-month 1");
+  assert.equal(new Cron("@weekly").describe(), "At 00:00, on Sunday");
+  assert.equal(new Cron("@daily").describe(), "At 00:00");
+  assert.equal(new Cron("@midnight").describe(), "At 00:00");
+  assert.equal(new Cron("@hourly").describe(), "At minute 0");
+});
