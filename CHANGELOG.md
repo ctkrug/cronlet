@@ -21,3 +21,13 @@ All notable changes to Cronlet are documented here. The format follows
 - Correctness cross-check against `cron-parser` and a `parse`/`next` throughput
   benchmark (`npm run bench`), both dev-only.
 - CI on Node 18/20/22 and a full test suite.
+
+### Fixed
+
+- Reject fields with multiple `/` or `-` separators (e.g. `1/2/3`, `1-5-9`) instead of
+  silently truncating them to a different schedule.
+
+### Changed
+
+- Stop emitting source/declaration maps into the published package; `src/` is not shipped,
+  so the maps only bloated the tarball (types still ship).
