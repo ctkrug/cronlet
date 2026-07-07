@@ -34,6 +34,19 @@ test("expands @macros", () => {
   assert.deepEqual(parse("@hourly").minute, [0]);
 });
 
+test("@macros and name aliases are case-insensitive", () => {
+  assert.equal(parse("@DAILY").source, "0 0 * * *");
+  assert.equal(parse("@Weekly").source, "0 0 * * 0");
+  assert.deepEqual(parse("0 0 1 jan,dec *").month, [1, 12]);
+  assert.deepEqual(parse("0 0 * * mon-fri").dayOfWeek, [1, 2, 3, 4, 5]);
+});
+
+test("tolerates surrounding and repeated interior whitespace", () => {
+  assert.deepEqual(parse("  0 0 * * *  ").minute, [0]);
+  assert.equal(parse("0\t0   *  *   *").source, "0\t0   *  *   *");
+  assert.deepEqual(parse("*/15   *  * * *").minute, [0, 15, 30, 45]);
+});
+
 test("stepped range a-b/n honors both bound and step", () => {
   assert.deepEqual(parse("0-30/10 * * * *").minute, [0, 10, 20, 30]);
 });
