@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { Cron, CronError, parse, describe, next, prev } from "../src/index.js";
+import { Cron, CronError, parse, describe, next, prev, matches } from "../src/index.js";
 
 /** Small seeded LCG so a failing case reproduces deterministically. */
 function makeRng(seed: number): () => number {
@@ -57,7 +57,9 @@ test("describe/next/prev never throw on any parsed expression (property)", () =>
     // do they must fail with a *designed* CronError, never an undesigned crash.
     for (const fn of [next, prev]) {
       try {
-        fn(parsed, anchor);
+        const hit = fn(parsed, anchor);
+        // Whatever instant next()/prev() returns MUST itself match the schedule.
+        assert.ok(matches(parsed, hit), `${fn.name} returned a non-matching instant for "${expr}"`);
       } catch (err) {
         assert.ok(err instanceof CronError, `${fn.name} threw non-CronError for "${expr}": ${err}`);
       }
