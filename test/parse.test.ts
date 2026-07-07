@@ -46,6 +46,15 @@ test("rejects malformed expressions", () => {
   assert.throws(() => parse("5-2 * * * *"), CronError);
 });
 
+test("rejects multi-separator fields instead of silently truncating", () => {
+  // split(sep, 2) once truncated these to "1/2" and "1-5", accepting a
+  // different schedule than written. A malformed field must throw, not guess.
+  assert.throws(() => parse("1/2/3 * * * *"), CronError);
+  assert.throws(() => parse("1-5-9 * * * *"), CronError);
+  assert.throws(() => parse("1-5/2/3 * * * *"), CronError);
+  assert.throws(() => parse("* */2/3 * * *"), CronError);
+});
+
 test("errors carry a field-specific, actionable message", () => {
   assert.throws(() => parse("* * * *"), /expected 5 fields, got 4/);
   assert.throws(() => parse("60 * * * *"), /minute value 60 out of range \(0-59\)/);
