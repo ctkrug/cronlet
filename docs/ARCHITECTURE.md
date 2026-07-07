@@ -20,7 +20,7 @@ Cronlet is two artifacts from one core:
 | `types.ts` | `ParsedCron` shape + the `CronError` class. No logic. |
 | `fields.ts` | The five `FieldDef`s (bounds + name aliases), `@macro` table, `normalizeDow`. |
 | `parse.ts` | `parseField` (one field → sorted int list) and `parse` (expression → `ParsedCron`). The only place that validates syntax. |
-| `schedule.ts` | `matches`, `next`/`nextN`, `prev`/`prevN`. Walks real `Date`s in local time (DST-safe). |
+| `schedule.ts` | `matches`, `next`/`nextN`, `prev`/`prevN`. Walks real `Date`s in local time (DST-safe). `next`/`prev` share a `MAX_ITERATIONS` cap and throw `CronError` on impossible dates (e.g. Feb 30). |
 | `describe.ts` | `describe` — turns a `ParsedCron` into a plain-English sentence by reasoning about field shapes (full / single / step / range / list). |
 | `index.ts` | Public surface: re-exports the above + the `Cron` class wrapper. |
 
@@ -60,9 +60,14 @@ The page imports `./lib/index.js`; `site/lib/` is a build artifact (git-ignored)
 
 ```sh
 npm test           # node --test over test/*.test.ts via tsx (pure logic, no network)
-npm run typecheck  # tsc --noEmit
+npm run typecheck  # tsc --noEmit (src only)
 npm run build      # emit dist/ (index.js + index.d.ts) for npm
 npm run build:site # compile src/ into site/lib/ for the page
+npm run bench      # parse + next-time throughput vs cron-parser
 ```
+
+`test/cross-check.test.ts` and `bench/bench.ts` import `cron-parser`, a **dev-only**
+correctness/perf reference. It is never imported by `src/`, so the published package
+(`files: [dist, README, LICENSE]`) stays zero-dependency.
 
 CI (`.github/workflows/ci.yml`) runs typecheck + tests + build on Node 18/20/22.
