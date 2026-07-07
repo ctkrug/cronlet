@@ -65,17 +65,17 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
     prints a table; results (and bundle-size delta) are pasted into the README.
   - Cronlet's core bundle size is reported and is a fraction of `node-cron`'s.
 
-- [ ] **3.2 — Package build & publish config verified**
+- [x] **3.2 — Package build & publish config verified**
   - `npm run build` emits `dist/` with `index.js` + `index.d.ts`; `npm pack --dry-run` lists
     only `dist/`, `README.md`, `LICENSE`.
   - Importing the built package (`import { Cron } from "cronlet"`) type-checks and runs.
 
-- [ ] **3.3 — Static site build to one deployable directory**
+- [x] **3.3 — Static site build to one deployable directory**
   - The page builds/copies into a single output dir suitable for `apps.charliekrug.com/cronlet`,
     with all asset references relative.
   - `site_build_dir` and `build_cmd` are recorded in STATUS.
 
-- [ ] **3.4 — Docs polish**
+- [x] **3.4 — Docs polish**
   - README carries an API reference (Cron, parse, next, nextN, matches, describe, CronError)
     with runnable examples and the syntax table.
   - VISION's "v1 done" checklist is fully satisfied or the gaps are noted.
