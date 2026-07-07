@@ -8,10 +8,16 @@ All notable changes to Cronlet are documented here. The format follows
 
 ### Added
 
-- Zero-dependency core: `parse`, `Cron`, `next`/`nextN`, `matches`, and `describe`.
+- Zero-dependency core: `parse`, `Cron`, `next`/`nextN`, `prev`/`prevN`, `matches`,
+  and `describe`.
 - Cron syntax support: wildcards, ranges, lists, steps (`*/n`, `a-b/n`, `a/n`),
   `JAN`–`DEC` / `SUN`–`SAT` aliases, `7`-as-Sunday, and `@macro` shortcuts.
 - Standard Vixie day-of-month **OR** day-of-week matching.
-- Companion static page (`site/`): live cron → English, next-five run log, and a
-  field schematic, in the blueprint art direction.
+- `prev()`/`prevN()` previous-run computation, mirroring `next()`.
+- Data-driven `describe()` that reasons about field shapes (full/single/step/range/list)
+  and surfaces the day OR rule explicitly.
+- Companion static page (`site/`): live cron → English, next-five run log, a field
+  schematic, and a reverse **English → cron builder**, in the blueprint art direction.
+- Correctness cross-check against `cron-parser` and a `parse`/`next` throughput
+  benchmark (`npm run bench`), both dev-only.
 - CI on Node 18/20/22 and a full test suite.
