@@ -9,7 +9,7 @@ web page that turns a cron string into plain English and back.**
 Cron syntax is deceptively hard. Step values (`*/15`), ranges (`1-5`), lists (`0,30`), the
 month/day-of-week name aliases, and the notorious day-of-month **OR** day-of-week interplay all
 hide in five terse fields. Cronlet handles them correctly in a **~150-line, zero-dependency
-core** — and proves it: the schedule it computes matches `node-cron` field-for-field, in a
+core** — and proves it: the schedule it computes matches `cron-parser` field-for-field, in a
 fraction of the bundle size.
 
 ```ts
@@ -30,7 +30,7 @@ job.matches(new Date()); // → boolean
   Cloudflare Worker, or a Node service without dragging a tree of transitive deps along.
 - **Correct where it counts.** Steps, ranges, lists, `JAN`–`DEC` / `SUN`–`SAT` aliases,
   `7`-as-Sunday, and the day-of-month / day-of-week OR rule — the edge cases that trip up naive
-  parsers — are covered by tests that cross-check against `node-cron`.
+  parsers — are covered by tests that cross-check against `cron-parser`.
 - **Explains itself.** `describe()` renders any expression as a plain-English sentence, so a
   cron string in a config file stops being a write-only riddle.
 - **Tiny and fast.** Zero dependencies and a core that gzips to **~4.7 KB**, benchmarked
