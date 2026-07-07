@@ -18,7 +18,7 @@ The static companion page in `site/`. Depends on the core primitives shipped at 
   - The page is one self-contained `site/` bundle using **relative** asset paths (opens via
     `file://` and works under a subpath) with no server or build step required to view.
 
-- [ ] **1.2 — English → cron builder writes the expression back**
+- [x] **1.2 — English → cron builder writes the expression back**
   - Choosing a frequency + time in the builder controls sets a valid expression into the input
     and re-runs the live translation.
   - Round-trip holds: builder-produced expression, when re-parsed, matches the builder's intent
