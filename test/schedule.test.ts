@@ -39,3 +39,41 @@ test("matches() reports minute-precision membership", () => {
   assert.equal(job.matches(new Date(2026, 5, 10, 14, 30, 45)), true);
   assert.equal(job.matches(new Date(2026, 5, 10, 14, 31, 0)), false);
 });
+
+test("prev() finds the last matching instant strictly before", () => {
+  const job = new Cron("*/15 * * * *");
+  const from = new Date(2026, 0, 1, 9, 7, 0); // 09:07
+  assert.deepEqual(job.prev(undefined, from), new Date(2026, 0, 1, 9, 0, 0));
+});
+
+test("prev() is strictly before the given instant", () => {
+  const job = new Cron("0 12 * * *");
+  const noon = new Date(2026, 0, 2, 12, 0, 0);
+  assert.deepEqual(job.prev(undefined, noon), new Date(2026, 0, 1, 12, 0, 0));
+});
+
+test("prev(n) returns n descending matches", () => {
+  const job = new Cron("0 0 * * *");
+  const from = new Date(2026, 0, 4, 6, 0, 0);
+  assert.deepEqual(job.prev(3, from), [
+    new Date(2026, 0, 4, 0, 0, 0),
+    new Date(2026, 0, 3, 0, 0, 0),
+    new Date(2026, 0, 2, 0, 0, 0),
+  ]);
+});
+
+test("prev() retreats across a month boundary", () => {
+  const job = new Cron("0 0 1 * *"); // midnight on the 1st
+  const mar2 = new Date(2026, 2, 2, 0, 0, 0);
+  assert.deepEqual(job.prev(undefined, mar2), new Date(2026, 2, 1, 0, 0, 0));
+  // And one before that lands on Feb 1.
+  assert.deepEqual(job.prev(undefined, new Date(2026, 2, 1, 0, 0, 0)), new Date(2026, 1, 1, 0, 0, 0));
+});
+
+test("prev then next round-trips to the same instant", () => {
+  const job = new Cron("30 9 * * 1-5");
+  const anchor = new Date(2026, 4, 20, 9, 30, 0); // a matching instant
+  assert.equal(job.matches(anchor), true);
+  const before = job.prev(undefined, anchor);
+  assert.deepEqual(job.next(undefined, before), anchor);
+});
